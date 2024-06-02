@@ -1,9 +1,7 @@
 package BooksAndRead.BooksAndRead.services;
 
 import BooksAndRead.BooksAndRead.entities.Author;
-import BooksAndRead.BooksAndRead.entities.Publishing;
 import BooksAndRead.BooksAndRead.repositories.AuthorRepository;
-import BooksAndRead.BooksAndRead.repositories.PublishingRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,8 +15,16 @@ public class AuthorService {
     @Autowired
     private AuthorRepository authorRepository;
 
+    public Author insert(Author author){
+        return authorRepository.save(author);
+    }
+
     public List<Author> findAll(){
         return authorRepository.findAll();
+    }
+
+    public List<Author> findByCountry(String country){
+        return authorRepository.findByCountry(country);
     }
 
     public Optional<Author> findById(String id){
@@ -52,6 +58,6 @@ public class AuthorService {
     }
 
     public void deleteByName(String name){
-        authorRepository.deleteById(name);
+        authorRepository.deleteByName(name);
     }
 }

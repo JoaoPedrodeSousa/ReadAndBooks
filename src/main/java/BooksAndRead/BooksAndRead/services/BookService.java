@@ -12,6 +12,10 @@ import java.util.Optional;
 public class BookService {
     private BookRepository bookRepository;
 
+    public Book insert(Book book){
+        return bookRepository.save(book);
+    }
+
     public List<Book> findAll(){
         return bookRepository.findAll();
     }
@@ -48,8 +52,8 @@ public class BookService {
         bookRepository.deleteById(id);
     }
 
-    public void deleteByName(String name){
-        bookRepository.deleteByName(name);
+    public void deleteByName(String title){
+        bookRepository.deleteByTitle(title);
     }
 
     public Book update(Long id, Book newBook){

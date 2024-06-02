@@ -1,5 +1,6 @@
 package BooksAndRead.BooksAndRead.services;
 
+import BooksAndRead.BooksAndRead.entities.Author;
 import BooksAndRead.BooksAndRead.entities.Publishing;
 import BooksAndRead.BooksAndRead.repositories.PublishingRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -14,6 +15,10 @@ public class PublishingService {
 
     @Autowired
     private PublishingRepository publishingRepository;
+
+    public Publishing insert(Publishing publishing){
+        return publishingRepository.save(publishing);
+    }
 
     public List<Publishing> findAll(){
         return publishingRepository.findAll();

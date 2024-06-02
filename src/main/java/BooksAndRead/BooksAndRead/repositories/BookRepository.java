@@ -24,5 +24,5 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     List<Book> findByPublishingDateBetween(Date startDate, Date endDate);
 
-    void deleteByName(String name);
+    void deleteByTitle(String title);
 }
