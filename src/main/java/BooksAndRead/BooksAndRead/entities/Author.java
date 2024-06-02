@@ -12,8 +12,8 @@ import java.util.Objects;
 @Table(name = "tb_authors")
 public class Author {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @Column(nullable = false)
     private String name;
@@ -31,7 +31,7 @@ public class Author {
     public Author() {
     }
 
-    public Author(Long id, String name, String country, String resume, List<Book> bookList) {
+    public Author(String id, String name, String country, String resume, List<Book> bookList) {
         this.id = id;
         this.name = name;
         this.country = country;
@@ -39,11 +39,11 @@ public class Author {
         this.bookList = bookList;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
