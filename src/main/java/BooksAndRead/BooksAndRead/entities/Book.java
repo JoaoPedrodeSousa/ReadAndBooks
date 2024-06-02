@@ -9,27 +9,42 @@ import java.util.Objects;
 @Table(name = "tb_books")
 public class Book {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false)
     private String title;
-    @Column(nullable = false)
+
+    @ManyToOne
+    @JoinColumn(name = "author_id",
+            nullable = false)
     private Author author;
+
     @Column(nullable = false)
     private String genre;
-    @Column(unique = true,nullable = false)
+
+    @ManyToOne
+    @JoinColumn(name = "publishing_id",
+            nullable = false)
     private Publishing publishing;
+
     @Column(nullable = false)
     private String description;
+
     @Column(nullable = false)
     private Date publishingDate;
+
     @Column(nullable = false)
     private String language;
+
+    @Column(nullable = false)
+    private String isbn;
+
 
     public Book() {
     }
 
-    public Book(Long id, String title, Author author, String genre, Publishing publishing, String description, Date publishingDate, String language) {
+    public Book(Long id, String title, Author author, String genre, Publishing publishing, String description, Date publishingDate, String language, String isbn) {
         this.id = id;
         this.title = title;
         this.author = author;
@@ -38,6 +53,7 @@ public class Book {
         this.description = description;
         this.publishingDate = publishingDate;
         this.language = language;
+        this.isbn = isbn;
     }
 
     public Long getId() {
@@ -102,6 +118,14 @@ public class Book {
 
     public void setLanguage(String language) {
         this.language = language;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
     }
 
     @Override
