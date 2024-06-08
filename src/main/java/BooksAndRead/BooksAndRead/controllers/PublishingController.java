@@ -32,7 +32,7 @@ public class PublishingController {
 
     @GetMapping(value = "/{name}")
     public ResponseEntity findByName(@PathVariable String name){
-        Optional<Publishing> publishing = publishingService.findByName(name);
+        Publishing publishing = publishingService.findByName(name);
         return ResponseEntity.ok(publishing);
     }
 

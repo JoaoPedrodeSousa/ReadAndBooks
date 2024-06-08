@@ -32,20 +32,26 @@ public class AuthorController {
 
     @GetMapping(value = "/{name}")
     public ResponseEntity findByName(@PathVariable String name){
-        Optional<Author> authors = authorService.findByName(name);
+        Author authors = authorService.findByName(name);
         return ResponseEntity.ok(authors);
     }
 
     @PostMapping
-    public ResponseEntity insert(@RequestBody Author authors ){
-        authors = authorService.insert(authors);
+    public ResponseEntity insert(@RequestBody Author author){
+        author = authorService.insert(author);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(authors.getId())
+                .buildAndExpand(author.getId())
                 .toUri();
 
-        return ResponseEntity.created(uri).body(authors);
+        return ResponseEntity.created(uri).body(author);
+    }
+
+    @PostMapping(value = "/list")
+    public ResponseEntity insertAll(@RequestBody List<Author> authors){
+        authorService.insertAll(authors);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping(value = "/{id}")

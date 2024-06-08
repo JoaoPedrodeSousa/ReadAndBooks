@@ -1,6 +1,5 @@
 package BooksAndRead.BooksAndRead.services;
 
-import BooksAndRead.BooksAndRead.entities.Author;
 import BooksAndRead.BooksAndRead.entities.Publishing;
 import BooksAndRead.BooksAndRead.repositories.PublishingRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -28,8 +27,8 @@ public class PublishingService {
         return publishingRepository.findById(id);
     }
 
-    public Optional<Publishing> findByName(String name){
-        return Optional.ofNullable(publishingRepository.findByName(name));
+    public Publishing findByName(String name){
+        return publishingRepository.findByName(name);
     }
 
     public Publishing update(String id, Publishing publishing) throws Exception {

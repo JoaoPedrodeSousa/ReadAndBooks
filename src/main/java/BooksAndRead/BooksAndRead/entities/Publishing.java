@@ -16,7 +16,7 @@ public class Publishing {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Column(nullable = false)
@@ -29,11 +29,10 @@ public class Publishing {
     public Publishing() {
     }
 
-    public Publishing(String id, String name, String resume, List<Book> bookList) {
+    public Publishing(String id, String name, String resume) {
         this.id = id;
         this.name = name;
         this.resume = resume;
-        this.bookList = bookList;
     }
 
     public String getId() {
@@ -64,9 +63,6 @@ public class Publishing {
         return bookList;
     }
 
-    public void setBookList(List<Book> bookList) {
-        this.bookList = bookList;
-    }
 
     @Override
     public boolean equals(Object o) {

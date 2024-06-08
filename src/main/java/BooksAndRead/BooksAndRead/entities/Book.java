@@ -1,5 +1,6 @@
 package BooksAndRead.BooksAndRead.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -42,6 +43,17 @@ public class Book {
 
 
     public Book() {
+    }
+
+    public Book(String title, Author author, String genre, Publishing publishing, String description, Date publishingDate, String language, String isbn) {
+        this.title = title;
+        this.author = author;
+        this.genre = genre;
+        this.publishing = publishing;
+        this.description = description;
+        this.publishingDate = publishingDate;
+        this.language = language;
+        this.isbn = isbn;
     }
 
     public Book(Long id, String title, Author author, String genre, Publishing publishing, String description, Date publishingDate, String language, String isbn) {
@@ -144,7 +156,7 @@ public class Book {
     public String toString() {
         return "Book{" +
                 "id=" + id +
-                ", name='" + title + '\'' +
+                ", title='" + title + '\'' +
                 ", author='" + author + '\'' +
                 ", genre='" + genre + '\'' +
                 ", publishing='" + publishing + '\'' +

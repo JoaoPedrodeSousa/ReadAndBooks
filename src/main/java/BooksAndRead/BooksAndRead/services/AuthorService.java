@@ -16,23 +16,45 @@ public class AuthorService {
     private AuthorRepository authorRepository;
 
     public Author insert(Author author){
+        author.setName(author.getName().toLowerCase().replace(" ", "-"));
+        author.setCountry(author.getCountry().toLowerCase().replace(" ", "-"));
+
         return authorRepository.save(author);
     }
 
-    public List<Author> findAll(){
-        return authorRepository.findAll();
+    public List<Author> insertAll(List<Author> authors){
+        return authorRepository.saveAll(authors);
     }
 
+    public List<Author> findAll() {
+        List<Author> authors = authorRepository.findAll();
+
+        authors.forEach(author -> {
+            author.setName(author
+                    .getName()
+                    .toLowerCase()
+                    .replace(" ", "-"));
+
+            author.setCountry(author
+                    .getCountry()
+                    .toLowerCase()
+                    .replace(" ", "-"));
+        });
+
+        return authors;
+    }
+
+
     public List<Author> findByCountry(String country){
-        return authorRepository.findByCountry(country);
+        return authorRepository.findByCountry(country.toLowerCase().replace(" ", "-"));
     }
 
     public Optional<Author> findById(String id){
         return authorRepository.findById(id);
     }
 
-    public Optional<Author> findByName(String name){
-        return Optional.ofNullable(authorRepository.findByName(name));
+    public Author findByName(String name){
+        return authorRepository.findByName(name.toLowerCase().replace(" ", "-"));
     }
 
     public Author update(String id, Author author) throws Exception {
@@ -47,8 +69,8 @@ public class AuthorService {
     }
 
     private Author updateData(Author author, Author newDataAuthor){
-        author.setName(newDataAuthor.getName());
-        author.setResume(newDataAuthor.getResume());
+        author.setName(newDataAuthor.getName().toLowerCase().replace(" ", "-"));
+        author.setResume(newDataAuthor.getResume().toLowerCase().replace(" ", "-"));
 
         return author;
     }
@@ -58,6 +80,6 @@ public class AuthorService {
     }
 
     public void deleteByName(String name){
-        authorRepository.deleteByName(name);
+        authorRepository.deleteByName(name.toLowerCase().replace(" ", "-"));
     }
 }

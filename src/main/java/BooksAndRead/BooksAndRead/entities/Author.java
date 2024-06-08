@@ -15,7 +15,7 @@ public class Author {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Column(nullable = false)
@@ -31,12 +31,11 @@ public class Author {
     public Author() {
     }
 
-    public Author(String id, String name, String country, String resume, List<Book> bookList) {
+    public Author(String id, String name, String country, String resume) {
         this.id = id;
         this.name = name;
         this.country = country;
         this.resume = resume;
-        this.bookList = bookList;
     }
 
     public String getId() {
@@ -73,10 +72,6 @@ public class Author {
 
     public List<Book> getBookList() {
         return bookList;
-    }
-
-    public void setBookList(List<Book> bookList) {
-        this.bookList = bookList;
     }
 
     @Override
