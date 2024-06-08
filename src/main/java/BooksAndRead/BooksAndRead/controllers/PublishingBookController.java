@@ -33,7 +33,7 @@ public class PublishingBookController {
         Publishing publishing = publishingService.findByName(publishingName);
         Author author = authorService.findByName(bookRequestDTO.authorName());
 
-        Book book = createNewBook(bookRequestDTO, author, publishing)
+        Book book = createNewBook(bookRequestDTO, author, publishing);
 
         book = bookService.insert(book);
         URI uri = ServletUriComponentsBuilder
@@ -86,25 +86,25 @@ public class PublishingBookController {
     }
 
     @GetMapping(value = "/books")
-    public ResponseEntity findByTitle(@RequestParam String title){
+    public ResponseEntity findByTitle(@PathVariable String publishingName, @RequestParam String title){
         Book book = bookService.findByTitle(title);
         return ResponseEntity.ok().body(book);
     }
 
     @GetMapping(value = "/books")
-    public ResponseEntity findByGenre(@RequestParam String genre){
+    public ResponseEntity findByGenre(@PathVariable String publishingName, @RequestParam String genre){
         List<Book> book = bookService.findByGenre(genre);
         return ResponseEntity.ok().body(book);
     }
 
     @GetMapping(value = "/books")
-    public ResponseEntity findByLanguage(@RequestParam String language){
+    public ResponseEntity findByLanguage(@PathVariable String publishingName, @RequestParam String language){
         List<Book> books = bookService.findByLanguage(language);
         return ResponseEntity.ok().body(books);
     }
 
     @GetMapping(value = "/books")
-    public ResponseEntity findByIsbn(@RequestParam String isbn){
+    public ResponseEntity findByIsbn(@PathVariable String publishingName, @RequestParam String isbn){
         Book book = bookService.findByIsbn(isbn);
         return ResponseEntity.ok().body(book);
     }
