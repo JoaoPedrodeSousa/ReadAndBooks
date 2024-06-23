@@ -5,9 +5,7 @@ import BooksAndRead.BooksAndRead.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class BookService {
@@ -54,6 +52,73 @@ public class BookService {
     public List<Book> findByPublishingDateBetween(Date startDate, Date endDate){
         return bookRepository.findByPublishingDateBetween(startDate, endDate);
     }
+
+    public List<Book> findByParams(Map<String, String> params){
+        List<Book> books = new ArrayList<>();
+
+        if (params.containsKey("title")){
+            String title = params.get("title");
+            Book book = this.findByTitle(title);
+            books.add(book);
+        }
+        if(params.containsKey("genre")){
+            String genre = params.get("genre");
+            List<Book> booksGenre = this.findByGenre(genre);
+
+            for(Book book : booksGenre){
+                books.add(book);
+            }
+        }
+        if(params.containsKey("language")){
+            String language = params.get("language");
+            List<Book> booksLanguage = this.findByLanguage(language);
+
+            for(Book book : booksLanguage){
+                books.add(book);
+            }
+        }
+        if (params.containsKey("isbn")){
+            String isbn = params.get("isbn");
+            Book book = this.findByIsbn(isbn);
+            books.add(book);
+        }
+
+        return books;
+    }
+
+    public List<Book> findByParams(String publishingName, Map<String, String> params){
+        List<Book> books = new ArrayList<>();
+
+        if (params.containsKey("title")){
+            String title = params.get("title");
+            Book book = bookRepository.findByPublishingAndTitle(publishingName, title);
+            books.add(book);
+        }
+        if(params.containsKey("genre")){
+            String genre = params.get("genre");
+            List<Book> booksGenre = bookRepository.findByPublishingAndGenre(publishingName,genre);
+
+            for(Book book : booksGenre){
+                books.add(book);
+            }
+        }
+        if(params.containsKey("language")){
+            String language = params.get("language");
+            List<Book> booksLanguage = bookRepository.findByPublishingAndLanguage(publishingName, language);
+
+            for(Book book : booksLanguage){
+                books.add(book);
+            }
+        }
+        if (params.containsKey("isbn")){
+            String isbn = params.get("isbn");
+            Book book = this.findByIsbn(isbn);
+            books.add(book);
+        }
+
+        return books;
+    }
+
 
     public void deleteById(Long id){
         bookRepository.deleteById(id);

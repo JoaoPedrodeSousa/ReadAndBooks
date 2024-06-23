@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -73,7 +75,7 @@ public class PublishingBookController {
 //        return ResponseEntity.created(uri).body(author);
 //    }
 
-    @GetMapping(value = "/books")
+    @GetMapping
     public ResponseEntity findAll(@PathVariable String publishingName){
         List<Book> books = bookService.findByPublishing(publishingName);
         return ResponseEntity.ok().body(books);
@@ -86,27 +88,10 @@ public class PublishingBookController {
     }
 
     @GetMapping(value = "/books")
-    public ResponseEntity findByTitle(@PathVariable String publishingName, @RequestParam String title){
-        Book book = bookService.findByTitle(title);
-        return ResponseEntity.ok().body(book);
-    }
-
-    @GetMapping(value = "/books")
-    public ResponseEntity findByGenre(@PathVariable String publishingName, @RequestParam String genre){
-        List<Book> book = bookService.findByGenre(genre);
-        return ResponseEntity.ok().body(book);
-    }
-
-    @GetMapping(value = "/books")
-    public ResponseEntity findByLanguage(@PathVariable String publishingName, @RequestParam String language){
-        List<Book> books = bookService.findByLanguage(language);
+    public ResponseEntity findByParams(@PathVariable String publishingName, @RequestParam Map<String, String> params){
+        List<Book> books = bookService.findByParams(publishingName, params);
         return ResponseEntity.ok().body(books);
-    }
 
-    @GetMapping(value = "/books")
-    public ResponseEntity findByIsbn(@PathVariable String publishingName, @RequestParam String isbn){
-        Book book = bookService.findByIsbn(isbn);
-        return ResponseEntity.ok().body(book);
     }
 
 
