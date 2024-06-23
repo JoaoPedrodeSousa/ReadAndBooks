@@ -14,19 +14,20 @@ import java.util.List;
 public interface BookRepository extends JpaRepository<Book, Long> {
     Book findByTitle(String title);
 
-    @Query("select b from Book b where b.publishing.id = :publishingId and b.title like %:title%")
-    Book findByPublishingAndTitle(@Param("publishingId") String publishingId,@Param("title") String title);
+    @Query("select b from Book b where b.publishing.name = :publishingName and b.title like %:title%")
+    Book findByPublishingNameAndTitle(@Param("publishingName") String publishingName, @Param("title") String title);
 
     List<Book> findByGenre(String genre);
-    @Query("select b from Book b where b.publishing.id = :publishingId and b.genre like %:genre%")
-    List<Book> findByPublishingAndGenre(@Param("publishingId") String publishingId,@Param("genre") String genre);
+    @Query("select b from Book b where b.publishing.name = :publishingName and b.genre like %:genre%")
+    List<Book> findByPublishingNameAndGenre(@Param("publishingName") String publishingName, @Param("genre") String genre);
+
     @Query("select b from Book b where b.publishing.id = :publishingId")
     List<Book> findByPublishing(@Param("publishingId") String publishingId);
 
     List<Book> findByLanguage(String language);
 
-    @Query("select b from Book b where b.publishing.id = :publishingId and b.language like %:language%")
-    List<Book> findByPublishingAndLanguage(@Param("publishingId") String publishingId,@Param("language") String language);
+    @Query("select b from Book b where b.publishing.name = :publishingName and b.language like %:language%")
+    List<Book> findByPublishingNameAndLanguage(@Param("publishingName") String publishingName, @Param("language") String language);
 
     Book findByIsbn(String isbn);
 

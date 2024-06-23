@@ -9,6 +9,7 @@ import BooksAndRead.BooksAndRead.services.BookService;
 import BooksAndRead.BooksAndRead.services.PublishingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -21,21 +22,28 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/{publishingName}")
 public class PublishingBookController {
-    @Autowired
-    private AuthorService authorService;
+
+    private final AuthorService authorService;
+    private final BookService bookService;
+    private final PublishingService publishingService;
 
     @Autowired
-    private BookService bookService;
-
-    @Autowired
-    private PublishingService publishingService;
-
+    public PublishingBookController(AuthorService authorService,
+                                    BookService bookService,
+                                    PublishingService publishingService){
+        this.authorService = authorService;
+        this.bookService = bookService;
+        this.publishingService = publishingService;
+    }
     @PostMapping
     public ResponseEntity insertBook(@PathVariable String publishingName, @RequestBody BookRequestDTO bookRequestDTO){
+
         Publishing publishing = publishingService.findByName(publishingName);
         Author author = authorService.findByName(bookRequestDTO.authorName());
 
         Book book = createNewBook(bookRequestDTO, author, publishing);
+
+        System.out.println(book.toString());
 
         book = bookService.insert(book);
         URI uri = ServletUriComponentsBuilder
@@ -47,7 +55,6 @@ public class PublishingBookController {
 
         return ResponseEntity.created(uri).body(book);
     }
-
     private Book createNewBook(BookRequestDTO bookRequestDTO, Author author, Publishing publishing){
         return new Book(
                 null,
@@ -61,52 +68,23 @@ public class PublishingBookController {
                 bookRequestDTO.isbn()
         );
     }
-
-//    @PostMapping(value = "/{publishingName}/authors/")
-//    public ResponseEntity insertAuthor(@PathVariable String publishingName, @RequestBody Author author){
-//
-//        author = authorService.insert(author);
-//        URI uri = ServletUriComponentsBuilder
-//                .fromCurrentRequest()
-//                .path("/{id}")
-//                .buildAndExpand(author.getId())
-//                .toUri();
-//
-//        return ResponseEntity.created(uri).body(author);
-//    }
-
     @GetMapping
     public ResponseEntity findAll(@PathVariable String publishingName){
         List<Book> books = bookService.findByPublishing(publishingName);
         return ResponseEntity.ok().body(books);
     }
-
     @GetMapping(value = "/books/{id}")
     public ResponseEntity findById(@PathVariable String publishingName, @PathVariable Long id){
         Optional<Book> book = bookService.findById(id);
         return ResponseEntity.ok().body(book);
     }
-
     @GetMapping(value = "/books")
     public ResponseEntity findByParams(@PathVariable String publishingName, @RequestParam Map<String, String> params){
         List<Book> books = bookService.findByParams(publishingName, params);
-        return ResponseEntity.ok().body(books);
 
+        System.out.println(params.toString());
+        return ResponseEntity.ok().body(books);
     }
 
-
-
-//    @GetMapping(value = "/{id}")
-//    public ResponseEntity findByPublishingDateBetween(@RequestParam Date startDate, @RequestParam Date endDate){
-//        List<Book> books = bookService.findByPublishingDateBetween(startDate, endDate);
-//        return ResponseEntity.ok().body(books);
-//    }
-
-
-
-//    @GetMapping(value = "/{publishingName}/authors/{id}")
-//    public ResponseEntity findBooksByAuthor(@PathVariable String publishingName, @RequestBody Author author) {
-//
-//    }
 
 }

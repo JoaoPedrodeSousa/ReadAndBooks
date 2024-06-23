@@ -18,6 +18,7 @@ public class BookService {
         book.setLanguage(book.getLanguage().toLowerCase().replace(" ", "-"));
         book.setGenre(book.getGenre().toLowerCase().replace(" ", "-"));
 
+
         return bookRepository.save(book);
     }
 
@@ -72,7 +73,6 @@ public class BookService {
         if(params.containsKey("language")){
             String language = params.get("language");
             List<Book> booksLanguage = this.findByLanguage(language);
-
             for(Book book : booksLanguage){
                 books.add(book);
             }
@@ -81,6 +81,14 @@ public class BookService {
             String isbn = params.get("isbn");
             Book book = this.findByIsbn(isbn);
             books.add(book);
+        }
+        if(params.containsKey("publishing")){
+            String publishing = params.get("publishing");
+            List<Book> booksPublishing = this.findByPublishing(publishing);
+
+            for(Book book : booksPublishing){
+                books.add(book);
+            }
         }
 
         return books;
@@ -91,12 +99,16 @@ public class BookService {
 
         if (params.containsKey("title")){
             String title = params.get("title");
-            Book book = bookRepository.findByPublishingAndTitle(publishingName, title);
+            System.out.println(title);
+
+            Book book = bookRepository.findByPublishingNameAndTitle(publishingName, title);
             books.add(book);
         }
         if(params.containsKey("genre")){
             String genre = params.get("genre");
-            List<Book> booksGenre = bookRepository.findByPublishingAndGenre(publishingName,genre);
+            System.out.println(genre);
+
+            List<Book> booksGenre = bookRepository.findByPublishingNameAndGenre(publishingName,genre);
 
             for(Book book : booksGenre){
                 books.add(book);
@@ -104,7 +116,8 @@ public class BookService {
         }
         if(params.containsKey("language")){
             String language = params.get("language");
-            List<Book> booksLanguage = bookRepository.findByPublishingAndLanguage(publishingName, language);
+            List<Book> booksLanguage = bookRepository.findByPublishingNameAndLanguage(publishingName, language);
+            System.out.println(language);
 
             for(Book book : booksLanguage){
                 books.add(book);
@@ -114,6 +127,8 @@ public class BookService {
             String isbn = params.get("isbn");
             Book book = this.findByIsbn(isbn);
             books.add(book);
+            System.out.println(isbn);
+
         }
 
         return books;
