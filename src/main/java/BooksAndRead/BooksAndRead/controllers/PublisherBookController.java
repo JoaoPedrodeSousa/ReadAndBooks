@@ -6,7 +6,7 @@ import BooksAndRead.BooksAndRead.entities.BookRequestDTO;
 import BooksAndRead.BooksAndRead.entities.Publisher;
 import BooksAndRead.BooksAndRead.services.AuthorService;
 import BooksAndRead.BooksAndRead.services.BookService;
-import BooksAndRead.BooksAndRead.services.PublishingService;
+import BooksAndRead.BooksAndRead.services.PublisherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,25 +18,25 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/a/{publishingName}")
-public class PublishingBookController {
+@RequestMapping("/{publisherName}")
+public class PublisherBookController {
 
     private final AuthorService authorService;
     private final BookService bookService;
-    private final PublishingService publishingService;
+    private final PublisherService publisherService;
 
     @Autowired
-    public PublishingBookController(AuthorService authorService,
-                                    BookService bookService,
-                                    PublishingService publishingService){
+    public PublisherBookController(AuthorService authorService,
+                                   BookService bookService,
+                                   PublisherService publisherService){
         this.authorService = authorService;
         this.bookService = bookService;
-        this.publishingService = publishingService;
+        this.publisherService = publisherService;
     }
     @PostMapping
-    public ResponseEntity insertBook(@PathVariable String publishingName, @RequestBody BookRequestDTO bookRequestDTO){
+    public ResponseEntity insertBook(@PathVariable String publisherName, @RequestBody BookRequestDTO bookRequestDTO){
 
-        Publisher publishing = publishingService.findByName(publishingName);
+        Publisher publishing = publisherService.findByName(publisherName);
         Author author = authorService.findByName(bookRequestDTO.authorName());
 
         Book book = createNewBook(bookRequestDTO, author, publishing);
@@ -67,20 +67,19 @@ public class PublishingBookController {
         );
     }
     @GetMapping
-    public ResponseEntity findAll(@PathVariable String publishingName){
-        List<Book> books = bookService.findByPublishing(publishingName);
+    public ResponseEntity findAll(@PathVariable String publisherName){
+        List<Book> books = bookService.findByPublisher(publisherName);
         return ResponseEntity.ok().body(books);
     }
     @GetMapping(value = "/books/{id}")
-    public ResponseEntity findById(@PathVariable String publishingName, @PathVariable Long id){
+    public ResponseEntity findById(@PathVariable String publisherName, @PathVariable Long id){
         Optional<Book> book = bookService.findById(id);
         return ResponseEntity.ok().body(book);
     }
     @GetMapping(value = "/books")
-    public ResponseEntity findByParams(@PathVariable String publishingName, @RequestParam Map<String, String> params){
-        List<Book> books = bookService.findByParams(publishingName, params);
+    public ResponseEntity findByParams(@PathVariable String publisherName, @RequestParam Map<String, String> params){
+        List<Book> books = bookService.findByParams(publisherName, params);
 
-        System.out.println(params.toString());
         return ResponseEntity.ok().body(books);
     }
 

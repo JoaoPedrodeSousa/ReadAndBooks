@@ -38,7 +38,7 @@ public class BookService {
         return bookRepository.findByGenre(genre);
     }
 
-    public List<Book> findByPublishing(String id){
+    public List<Book> findByPublisher(String id){
         return bookRepository.findByPublisher(id);
     }
 
@@ -84,7 +84,7 @@ public class BookService {
         }
         if(params.containsKey("publishing")){
             String publishing = params.get("publishing");
-            List<Book> booksPublishing = this.findByPublishing(publishing);
+            List<Book> booksPublishing = this.findByPublisher(publishing);
 
             for(Book book : booksPublishing){
                 books.add(book);
