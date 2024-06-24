@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -14,7 +15,9 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "tb_publisher")
-public class Publisher implements UserDetails {
+public class Publisher implements UserDetails, Serializable {
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
@@ -28,7 +31,6 @@ public class Publisher implements UserDetails {
     @Column(nullable = false)
     private String resume;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "publisher")
     private List<Book> bookList = new ArrayList<>();
 

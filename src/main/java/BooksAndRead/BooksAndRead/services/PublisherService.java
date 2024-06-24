@@ -12,11 +12,10 @@ import java.util.Optional;
 @Service
 public class PublisherService {
 
+    private final PublisherRepository publisherRepository;
     @Autowired
-    private PublisherRepository publisherRepository;
-
-    public Publisher insert(Publisher publishing){
-        return publisherRepository.save(publishing);
+    public PublisherService(PublisherRepository publisherRepository) {
+        this.publisherRepository = publisherRepository;
     }
 
     public List<Publisher> findAll(){
@@ -31,10 +30,12 @@ public class PublisherService {
         return publisherRepository.findByPublisherName(name);
     }
 
+
     public Publisher update(String id, Publisher publishing) throws Exception {
         try {
-            Publisher oldPublishing = publisherRepository.getReferenceById(id);
+            Publisher oldPublishing = publisherRepository.findById(id).get();
             Publisher newPublishing = updateData(oldPublishing, publishing);
+            publisherRepository.save(newPublishing);
             return newPublishing;
 
         } catch (EntityNotFoundException e){
@@ -53,7 +54,4 @@ public class PublisherService {
         publisherRepository.deleteById(id);
     }
 
-    public void deleteByName(String name){
-        publisherRepository.deleteById(name);
-    }
 }

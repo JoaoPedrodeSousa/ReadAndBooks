@@ -1,13 +1,18 @@
 package BooksAndRead.BooksAndRead.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
 @Entity
 @Table(name = "tb_books")
-public class Book {
+public class Book implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,6 +28,7 @@ public class Book {
     @Column(nullable = false)
     private String genre;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "publisher_id",
             nullable = false)
