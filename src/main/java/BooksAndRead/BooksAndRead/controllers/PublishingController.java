@@ -1,6 +1,6 @@
 package BooksAndRead.BooksAndRead.controllers;
 
-import BooksAndRead.BooksAndRead.entities.Publishing;
+import BooksAndRead.BooksAndRead.entities.Publisher;
 import BooksAndRead.BooksAndRead.services.PublishingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(value = "/publishing")
+@RequestMapping(value = "/publisher")
 public class PublishingController {
 
     @Autowired
@@ -20,24 +20,24 @@ public class PublishingController {
 
     @GetMapping
     public ResponseEntity findAll(){
-        List<Publishing> publishings = publishingService.findAll();
+        List<Publisher> publishings = publishingService.findAll();
         return ResponseEntity.ok().body(publishings);
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity findById(@PathVariable String id){
-        Optional<Publishing> publishing = publishingService.findById(id);
+        Optional<Publisher> publishing = publishingService.findById(id);
         return ResponseEntity.ok().body(publishing);
     }
 
     @GetMapping(value = "/{name}")
     public ResponseEntity findByName(@PathVariable String name){
-        Publishing publishing = publishingService.findByName(name);
+        Publisher publishing = publishingService.findByName(name);
         return ResponseEntity.ok(publishing);
     }
 
     @PostMapping
-    public ResponseEntity insert(@RequestBody Publishing publishing){
+    public ResponseEntity insert(@RequestBody Publisher publishing){
         publishing = publishingService.insert(publishing);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -49,7 +49,7 @@ public class PublishingController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity updateById(@PathVariable String id, @RequestBody Publishing publishing) throws Exception {
+    public ResponseEntity updateById(@PathVariable String id, @RequestBody Publisher publishing) throws Exception {
         publishing = publishingService.update(id, publishing);
         return ResponseEntity.ok().body(publishing);
     }

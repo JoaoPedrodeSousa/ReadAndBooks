@@ -39,7 +39,7 @@ public class BookService {
     }
 
     public List<Book> findByPublishing(String id){
-        return bookRepository.findByPublishing(id);
+        return bookRepository.findByPublisher(id);
     }
 
     public List<Book> findByLanguage(String language){
@@ -101,14 +101,14 @@ public class BookService {
             String title = params.get("title");
             System.out.println(title);
 
-            Book book = bookRepository.findByPublishingNameAndTitle(publishingName, title);
+            Book book = bookRepository.findByPublisherNameAndTitle(publishingName, title);
             books.add(book);
         }
         if(params.containsKey("genre")){
             String genre = params.get("genre");
             System.out.println(genre);
 
-            List<Book> booksGenre = bookRepository.findByPublishingNameAndGenre(publishingName,genre);
+            List<Book> booksGenre = bookRepository.findByPublisherNameAndGenre(publishingName,genre);
 
             for(Book book : booksGenre){
                 books.add(book);
@@ -116,7 +116,7 @@ public class BookService {
         }
         if(params.containsKey("language")){
             String language = params.get("language");
-            List<Book> booksLanguage = bookRepository.findByPublishingNameAndLanguage(publishingName, language);
+            List<Book> booksLanguage = bookRepository.findByPublisherNameAndLanguage(publishingName, language);
             System.out.println(language);
 
             for(Book book : booksLanguage){
@@ -153,7 +153,7 @@ public class BookService {
     private Book updateData(Book book, Book newDataBook){
         book.setAuthor(newDataBook.getAuthor());
         book.setTitle(newDataBook.getTitle().toLowerCase().replace(" ", "-"));
-        book.setPublishing(newDataBook.getPublishing());
+        book.setPublisher(newDataBook.getPublisher());
         book.setDescription(newDataBook.getDescription());
         book.setGenre(newDataBook.getGenre().toLowerCase().replace(" ", "-"));
         book.setLanguage(newDataBook.getLanguage().toLowerCase().replace(" ", "-"));

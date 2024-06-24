@@ -25,7 +25,7 @@ public class User implements UserDetails {
 
     private String password;
 
-    private String authorited;
+    private String authority;
 
 
     public User() {
@@ -36,17 +36,19 @@ public class User implements UserDetails {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.authority = "USER";
     }
 
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.authority = "USER";
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        return List.of(new SimpleGrantedAuthority(this.getAuthority()));
     }
 
     public String getId() {
@@ -83,6 +85,10 @@ public class User implements UserDetails {
         this.email = email;
     }
 
+    public String getAuthority() {
+        return authority;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -102,7 +108,7 @@ public class User implements UserDetails {
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", authorited='" + authorited + '\'' +
+                ", authority='" + authority + '\'' +
                 '}';
     }
 }

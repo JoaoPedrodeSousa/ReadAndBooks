@@ -3,9 +3,11 @@ package BooksAndRead.BooksAndRead.controllers;
 
 import BooksAndRead.BooksAndRead.Constants.JWTConstants;
 import BooksAndRead.BooksAndRead.entities.LoginRequestDTO;
+import BooksAndRead.BooksAndRead.entities.Publisher;
 import BooksAndRead.BooksAndRead.entities.RegisterDTO;
 import BooksAndRead.BooksAndRead.entities.User;
 import BooksAndRead.BooksAndRead.infra.TokenGenerator;
+import BooksAndRead.BooksAndRead.repositories.PublisherRepository;
 import BooksAndRead.BooksAndRead.repositories.UserRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,6 +35,9 @@ public class AuthenticationController {
     private UserRepository userRepository;
 
     @Autowired
+    private PublisherRepository publisherRepository;
+
+    @Autowired
     private TokenGenerator tokenGenerator;
 
     @PostMapping(value = "/login")
@@ -39,7 +45,7 @@ public class AuthenticationController {
         var usernamePassword = new UsernamePasswordAuthenticationToken(request.username(), request.password());
 
         var authentication = authenticationManager.authenticate(usernamePassword);
-        var token = tokenGenerator.generateToken((User) authentication.getPrincipal());
+        var token = tokenGenerator.generateToken((UserDetails) authentication.getPrincipal());
 
         var cookie = this.setAuthenticationCookie(token);
         response.addCookie(cookie);
@@ -52,14 +58,25 @@ public class AuthenticationController {
 
     @PostMapping(value = "/register")
     public ResponseEntity register(@RequestBody RegisterDTO request){
-        if(userRepository.findByUsername(request.username()) != null){
+        if(request.authority() == null
+                || (userRepository.findByUsername(request.username()) != null
+                        && publisherRepository.findByPublisherName(request.username()) != null)) {
+
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(request.password());
 
-        User newUser = new User(request.username(),request.email(),encryptedPassword);
-        userRepository.save(newUser);
+        if(request.authority().equals("PUBLISHER")){
+            Publisher newPublisher = new Publisher(request.username(), encryptedPassword, request.resume());
+            publisherRepository.save(newPublisher);
+
+        }
+        else if (request.authority().equals("USER")) {
+            User newUser = new User(request.username(),request.email(),encryptedPassword);
+            userRepository.save(newUser);
+
+        }
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)

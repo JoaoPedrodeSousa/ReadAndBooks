@@ -1,7 +1,7 @@
 package BooksAndRead.BooksAndRead.services;
 
-import BooksAndRead.BooksAndRead.entities.Publishing;
-import BooksAndRead.BooksAndRead.repositories.PublishingRepository;
+import BooksAndRead.BooksAndRead.entities.Publisher;
+import BooksAndRead.BooksAndRead.repositories.PublisherRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,28 +13,28 @@ import java.util.Optional;
 public class PublishingService {
 
     @Autowired
-    private PublishingRepository publishingRepository;
+    private PublisherRepository publisherRepository;
 
-    public Publishing insert(Publishing publishing){
-        return publishingRepository.save(publishing);
+    public Publisher insert(Publisher publishing){
+        return publisherRepository.save(publishing);
     }
 
-    public List<Publishing> findAll(){
-        return publishingRepository.findAll();
+    public List<Publisher> findAll(){
+        return publisherRepository.findAll();
     }
 
-    public Optional<Publishing> findById(String id){
-        return publishingRepository.findById(id);
+    public Optional<Publisher> findById(String id){
+        return publisherRepository.findById(id);
     }
 
-    public Publishing findByName(String name){
-        return publishingRepository.findByName(name);
+    public Publisher findByName(String name){
+        return publisherRepository.findByPublisherName(name);
     }
 
-    public Publishing update(String id, Publishing publishing) throws Exception {
+    public Publisher update(String id, Publisher publishing) throws Exception {
         try {
-            Publishing oldPublishing = publishingRepository.getReferenceById(id);
-            Publishing newPublishing = updateData(oldPublishing, publishing);
+            Publisher oldPublishing = publisherRepository.getReferenceById(id);
+            Publisher newPublishing = updateData(oldPublishing, publishing);
             return newPublishing;
 
         } catch (EntityNotFoundException e){
@@ -42,18 +42,18 @@ public class PublishingService {
         }
     }
 
-    private Publishing updateData(Publishing publishing, Publishing newDataPublishing){
-        publishing.setName(newDataPublishing.getName());
+    private Publisher updateData(Publisher publishing, Publisher newDataPublishing){
+        publishing.setUsername(newDataPublishing.getUsername());
         publishing.setResume(newDataPublishing.getResume());
 
         return publishing;
     }
 
     public void deleteById(String id){
-        publishingRepository.deleteById(id);
+        publisherRepository.deleteById(id);
     }
 
     public void deleteByName(String name){
-        publishingRepository.deleteById(name);
+        publisherRepository.deleteById(name);
     }
 }

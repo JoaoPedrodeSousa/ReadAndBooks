@@ -3,24 +3,22 @@ package BooksAndRead.BooksAndRead.controllers;
 import BooksAndRead.BooksAndRead.entities.Author;
 import BooksAndRead.BooksAndRead.entities.Book;
 import BooksAndRead.BooksAndRead.entities.BookRequestDTO;
-import BooksAndRead.BooksAndRead.entities.Publishing;
+import BooksAndRead.BooksAndRead.entities.Publisher;
 import BooksAndRead.BooksAndRead.services.AuthorService;
 import BooksAndRead.BooksAndRead.services.BookService;
 import BooksAndRead.BooksAndRead.services.PublishingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/{publishingName}")
+@RequestMapping("/a/{publishingName}")
 public class PublishingBookController {
 
     private final AuthorService authorService;
@@ -38,7 +36,7 @@ public class PublishingBookController {
     @PostMapping
     public ResponseEntity insertBook(@PathVariable String publishingName, @RequestBody BookRequestDTO bookRequestDTO){
 
-        Publishing publishing = publishingService.findByName(publishingName);
+        Publisher publishing = publishingService.findByName(publishingName);
         Author author = authorService.findByName(bookRequestDTO.authorName());
 
         Book book = createNewBook(bookRequestDTO, author, publishing);
@@ -55,7 +53,7 @@ public class PublishingBookController {
 
         return ResponseEntity.created(uri).body(book);
     }
-    private Book createNewBook(BookRequestDTO bookRequestDTO, Author author, Publishing publishing){
+    private Book createNewBook(BookRequestDTO bookRequestDTO, Author author, Publisher publishing){
         return new Book(
                 null,
                 bookRequestDTO.title(),

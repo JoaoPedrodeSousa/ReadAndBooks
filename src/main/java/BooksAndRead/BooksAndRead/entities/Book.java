@@ -1,6 +1,5 @@
 package BooksAndRead.BooksAndRead.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -25,9 +24,9 @@ public class Book {
     private String genre;
 
     @ManyToOne
-    @JoinColumn(name = "publishing_id",
+    @JoinColumn(name = "publisher_id",
             nullable = false)
-    private Publishing publishing;
+    private Publisher publisher;
 
     @Column(nullable = false)
     private String description;
@@ -45,23 +44,23 @@ public class Book {
     public Book() {
     }
 
-    public Book(String title, Author author, String genre, Publishing publishing, String description, Date publishingDate, String language, String isbn) {
+    public Book(String title, Author author, String genre, Publisher publisher, String description, Date publishingDate, String language, String isbn) {
         this.title = title;
         this.author = author;
         this.genre = genre;
-        this.publishing = publishing;
+        this.publisher = publisher;
         this.description = description;
         this.publishingDate = publishingDate;
         this.language = language;
         this.isbn = isbn;
     }
 
-    public Book(Long id, String title, Author author, String genre, Publishing publishing, String description, Date publishingDate, String language, String isbn) {
+    public Book(Long id, String title, Author author, String genre, Publisher publisher, String description, Date publishingDate, String language, String isbn) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.genre = genre;
-        this.publishing = publishing;
+        this.publisher = publisher;
         this.description = description;
         this.publishingDate = publishingDate;
         this.language = language;
@@ -100,12 +99,12 @@ public class Book {
         this.genre = genre;
     }
 
-    public Publishing getPublishing() {
-        return publishing;
+    public Publisher getPublisher() {
+        return publisher;
     }
 
-    public void setPublishing(Publishing publishing) {
-        this.publishing = publishing;
+    public void setPublisher(Publisher publisher) {
+        this.publisher = publisher;
     }
 
     public String getDescription() {
@@ -159,7 +158,7 @@ public class Book {
                 ", title='" + title + '\'' +
                 ", author='" + author + '\'' +
                 ", genre='" + genre + '\'' +
-                ", publishing='" + publishing + '\'' +
+                ", publisher='" + publisher + '\'' +
                 ", description='" + description + '\'' +
                 ", publishingDate=" + publishingDate +
                 ", language='" + language + '\'' +
